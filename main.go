@@ -37,8 +37,12 @@ func main() {
 	// Initialize memory cache
 	common.InitTokenEncoders()
 
-	// Set Gin mode
-	if os.Getenv("GIN_MODE") != "debug" {
+	// Set Gin mode — default to release unless explicitly set to debug
+	ginMode := os.Getenv("GIN_MODE")
+	if ginMode == "debug" {
+		gin.SetMode(gin.DebugMode)
+		common.SysLog("Running in DEBUG mode")
+	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
