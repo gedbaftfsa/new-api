@@ -38,6 +38,7 @@ func main() {
 	common.InitTokenEncoders()
 
 	// Set Gin mode — default to release unless explicitly set to debug
+	// Note: set GIN_MODE=debug in your .env to get verbose route logging during development
 	ginMode := os.Getenv("GIN_MODE")
 	if ginMode == "debug" {
 		gin.SetMode(gin.DebugMode)
@@ -57,6 +58,12 @@ func main() {
 	var port = os.Getenv("PORT")
 	if port == "" {
 		port = strconv.Itoa(*common.Port)
+	}
+
+	// Validate that port is a reasonable number before starting
+	portNum, err := strconv.Atoi(port)
+	if err != nil || portNum < 1 || portNum > 65535 {
+		common.FatalLog(fmt.Sprintf("Invalid port number: %s", port))
 	}
 
 	common.SysLog(fmt.Sprintf("Server listening on port %s", port))
