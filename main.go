@@ -12,9 +12,11 @@ import (
 	"new-api/router"
 )
 
+const Version = "1.0.0-personal"
+
 func main() {
 	common.SetupLogger()
-	common.SysLog("New API starting...")
+	common.SysLog(fmt.Sprintf("New API starting... (fork version: %s)", Version))
 
 	// Initialize database
 	err := model.InitDB()
